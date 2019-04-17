@@ -1,0 +1,7 @@
+C# (pronounced C sharp) is a general-purpose, multi-paradigm programming language.
+Encompassing strong typing, lexically scoped, imperative, declarative, functional, generic,
+object-oriented (class-based).
+Component-oriented programming disciplines. It was developed around 2000 by Microsoft 
+within its .NET initiative and later approved as a standard by Ecma (ECMA-334) and ISO .
+C# is one of the programming languages designed for the Common Language Infrastructure.
+The most recent version is C# 7.3, was released in 2018.
