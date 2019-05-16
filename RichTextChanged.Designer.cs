@@ -93,9 +93,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Label labelText;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label labelPath;
+        public System.Windows.Forms.Label labelText;
+        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button button2;
+        public System.Windows.Forms.Label labelPath;
     }
 }

@@ -137,6 +137,7 @@ namespace OpenSaveTextBox
 
         private void FindAll_Click(object sender, EventArgs e)
         {
+            findAllDoc.Visible = false;
             if (findTextBox.Text == "")
             {
                 MessageBox.Show("Please insert a word to be searched.");
@@ -151,7 +152,7 @@ namespace OpenSaveTextBox
 
         private void FindAllDoc_Click(object sender, EventArgs e)
          {
-
+            findAll.Visible = false;
             if (findTextBox.Text == "")
             {
                 MessageBox.Show("Please insert a word to be searched.");
@@ -271,6 +272,5 @@ namespace OpenSaveTextBox
                 this.Text = "Search";
             }
         }
-
     }
 }

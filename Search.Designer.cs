@@ -188,7 +188,7 @@
             this.Controls.Add(this.findTextBox);
             this.Controls.Add(this.label1);
             this.Name = "Search";
-            this.Text = "Form2";
+            this.Text = "Search";
             this.ResumeLayout(false);
             this.PerformLayout();
 

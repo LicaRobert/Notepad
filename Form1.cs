@@ -8,12 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace OpenSaveTextBox
 {
     public partial class Form1 : Form
     {
         public const int MAXCHARACTERS = 750;
+
+        OpenFileDialog open = new OpenFileDialog();
+        string fullPath;
+        double clicked = 0;
+
+        public string GetOpenFile()
+        {
+            return fullPath = Path.GetFullPath(open.FileName);
+        }
 
         public Form1()
         {
@@ -22,6 +32,8 @@ namespace OpenSaveTextBox
             txtArea.Font = new Font("Microsoft Sans Serif", 10);
             myListBox.Visible = false;
             closeListBoxToolStripMenuItem.Visible = false;
+            clipboardListBox.Visible = false;
+            closeClipboard.Visible = false;
         }
 
         private void FontSizeMenu_Click(object sender, EventArgs e)
@@ -50,13 +62,11 @@ namespace OpenSaveTextBox
 
         private void OpenFileMenu_Click_1(object sender, EventArgs e)
         {
-
-            OpenFileDialog open = new OpenFileDialog();
+           // OpenFileDialog open = new OpenFileDialog();
             open.Title = "Open File";
             if (open.ShowDialog() == DialogResult.OK)
             {
-                string fullPath = Path.GetFullPath(open.FileName);
-                StreamReader read = new StreamReader(File.OpenRead(fullPath));
+                StreamReader read = new StreamReader(File.OpenRead(GetOpenFile()));
                 txtArea.Text = read.ReadToEnd();
                 read.Dispose();
             }
@@ -119,12 +129,36 @@ namespace OpenSaveTextBox
         private void CopyToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(txtArea.SelectedText);
+
+            List<string> items = new List<string>();
+
+            int count = 0;
+            var lineNumber = txtArea.Lines;
+
+            foreach (var lineText in lineNumber)
+            {
+                count++;
+
+                if (lineText.Contains(txtArea.SelectedText))
+                {
+                    ClipboardHistory clip = new ClipboardHistory();
+                    clip.countLineText = lineText;
+                    clip.countLineNumber = count;
+                    clipboardListBox.Items.Add(clip);
+                    items.Add(lineText);
+                }
+            }
         }
 
         private void PasteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            txtArea.SelectedText = "";
+
             string paste = Clipboard.GetText();
+
+            int i = txtArea.SelectionStart;
             txtArea.Text = txtArea.Text.Insert(txtArea.SelectionStart, paste);
+            txtArea.SelectionStart = i + Clipboard.GetText().Length;
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -207,6 +241,7 @@ namespace OpenSaveTextBox
             {
                 AddLineNumbers();
             }
+
         }
 
         private void TxtArea_VScroll(object sender, EventArgs e)
@@ -259,6 +294,8 @@ namespace OpenSaveTextBox
 
             toolStripStatusLabel1.Text = countLabel.Text.PadLeft(10, ' ');
             toolStripStatusLabel2.Text = "Characters left : ".PadLeft(130, ' ') + charLeft;
+
+
             if (txtArea.Text == "")
             {
                 AddLineNumbers();
@@ -311,6 +348,7 @@ namespace OpenSaveTextBox
                 string word = txtArea.SelectedText;
                 SelectAll(txtArea, word, Color.DarkSeaGreen, Font.Bold);
             }
+
         }
 
         private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -332,7 +370,7 @@ namespace OpenSaveTextBox
             txtArea.Select(index, 0);
             txtArea.ScrollToCaret();
             txtArea.Focus();
-            closeListBoxToolStripMenuItem.Visible = true;
+           //closeListBoxToolStripMenuItem.Visible = true;
         }
 
         private void CloseListBoxToolStripMenuItem_Click(object sender, EventArgs e)
@@ -340,17 +378,84 @@ namespace OpenSaveTextBox
             myListBox.Visible = false;
             myListBox.Items.Clear();
             closeListBoxToolStripMenuItem.Visible = false;
+            string text = txtArea.Text;
+            string lineNumber = lineNumberRichText.Text;
+            txtArea.Clear();
+            lineNumberRichText.Clear();
+            txtArea.Text = text;
+            lineNumberRichText.Text = lineNumber;
+        }
+
+        private void FileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
+        {
+
+            string path = GetOpenFile();
+            DateTime getLastWrite = File.GetLastWriteTime(path);
+
+            if (clicked < getLastWrite.TimeOfDay.TotalMilliseconds)
+            {
+                clicked = getLastWrite.Ticks;
+
+                fileSystemWatcher1.NotifyFilter = NotifyFilters.LastWrite;
+                fileSystemWatcher1.Filter = "*.txt";
+                fileSystemWatcher1.IncludeSubdirectories = true;
+                fileSystemWatcher1.EnableRaisingEvents = true;
+                RichTextChanged rich = new RichTextChanged(this);
+                rich.Show();
+            }
         }
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-
-            string path = @"C:\Users\spr_a_000\source\repos\OpenSaveTextBox\fisier.txt";
-            if (File.GetLastWriteTime(path) > DateTime.Now.AddSeconds(-2))
+            if (myListBox.Visible == true)
             {
-                RichTextChanged rich = new RichTextChanged(this);
-                rich.Show();
+                closeListBoxToolStripMenuItem.Visible = true;
             }
+        }
+
+        private void UpperCaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtArea.SelectedText = txtArea.SelectedText.ToUpper();
+        }
+
+        private void LowerCaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtArea.SelectedText = txtArea.SelectedText.ToLower();
+        }
+
+        private void SearchInFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form2 form = new Form2(myListBox);
+        }
+
+        private void CloseClipboard_Click(object sender, EventArgs e)
+        {
+            clipboardListBox.Visible = false;
+            closeClipboard.Visible = false;
+            clipboardListBox.Items.Clear();
+        }
+
+        private void ClipBoardHistory_Click(object sender, EventArgs e)
+        {
+            clipboardListBox.Visible = true;
+            closeClipboard.Visible = true;
+        }
+
+        private void ClipboardListBox_DoubleClick(object sender, EventArgs e)
+        {
+            ClipboardHistory clip = clipboardListBox.SelectedItem as ClipboardHistory;
+
+            int i = txtArea.SelectionStart;
+            txtArea.Text = txtArea.Text.Insert(txtArea.SelectionStart, clip.ToString());
+            txtArea.SelectionStart = i + clip.countLineText.Length;
+
+            txtArea.Focus();
+        }
+
+        private void ColumnEditor_Click(object sender, EventArgs e)
+        {
+            ColumnEditor column = new ColumnEditor(this);
+            column.Show();
         }
     }
 }
