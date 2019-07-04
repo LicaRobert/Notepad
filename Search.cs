@@ -153,6 +153,7 @@ namespace OpenSaveTextBox
         private void FindAllDoc_Click(object sender, EventArgs e)
          {
             findAll.Visible = false;
+
             if (findTextBox.Text == "")
             {
                 MessageBox.Show("Please insert a word to be searched.");
@@ -174,8 +175,8 @@ namespace OpenSaveTextBox
                   if (lineText.Contains(findTextBox.Text))
                   {
                     GoToLineListBox lineList = new GoToLineListBox();
-                    lineList.countLineNumber = count;
-                    lineList.countLineText = lineText;
+                    lineList.LineNumber = count;
+                    lineList.LineText = lineText;
                     parent.myListBox.Items.Add(lineList);
                     items.Add(lineText);
                 }

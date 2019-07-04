@@ -25,7 +25,7 @@ namespace OpenSaveTextBox
             listBox = l;
         }
 
-        private void searchBtn_Click(object sender, EventArgs e)
+        private void SearchBtn_Click(object sender, EventArgs e)
         {
             if(searchTextBox.Text == "")
             {
@@ -46,6 +46,7 @@ namespace OpenSaveTextBox
                         SearchedItems searched = new SearchedItems();
                         searched.LineNumber = count;
                         searched.LineText = line;
+                        searched.filePath = file;
                         searched.findForm = false;
                         listBox.Items.Add(searched);
                         listBox.Visible = true;
@@ -59,7 +60,7 @@ namespace OpenSaveTextBox
            Close();
         }
 
-        private void openFileDialogBtn_Click(object sender, EventArgs e)
+        private void OpenFileDialogBtn_Click(object sender, EventArgs e)
         {
             using (var folderBrowser = new FolderBrowserDialog())
             {

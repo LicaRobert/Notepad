@@ -8,8 +8,7 @@ namespace OpenSaveTextBox
 {
     class ClipboardHistory
     {
-        internal int countLineNumber;
-
+        public int countLineNumber;
         public string countLineText { get; set; }
         public int LineNumber { get; set; }
 

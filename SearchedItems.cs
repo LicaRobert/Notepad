@@ -11,6 +11,8 @@ namespace OpenSaveTextBox
         public int LineNumber { get; set; }
         public string LineText { get; set; }
         public bool findForm { get; set; }
+        public string filePath { get; set; }
+
         public override string ToString()
         {
             return "Line " + LineNumber + ": " + LineText + "\n";

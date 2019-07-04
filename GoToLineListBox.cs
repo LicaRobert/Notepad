@@ -8,12 +8,12 @@ namespace OpenSaveTextBox
 {
     class GoToLineListBox
     {
-        public int countLineNumber { get; set; }
-        public string countLineText { get; set; }
+        public int LineNumber { get; set; }
+        public string LineText { get; set; }
 
         public override string ToString()
         {
-            return "Line " + countLineNumber + ": " + countLineText + "\n";
+            return "Line " + LineNumber + ": " + LineText + "\n";
         }
     }
 }

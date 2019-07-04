@@ -89,7 +89,7 @@
             this.searchBtn.TabIndex = 5;
             this.searchBtn.Text = "Search";
             this.searchBtn.UseVisualStyleBackColor = true;
-            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
+            this.searchBtn.Click += new System.EventHandler(this.SearchBtn_Click);
             // 
             // openFileDialogBtn
             // 
@@ -99,7 +99,7 @@
             this.openFileDialogBtn.TabIndex = 6;
             this.openFileDialogBtn.Text = "...";
             this.openFileDialogBtn.UseVisualStyleBackColor = true;
-            this.openFileDialogBtn.Click += new System.EventHandler(this.openFileDialogBtn_Click);
+            this.openFileDialogBtn.Click += new System.EventHandler(this.OpenFileDialogBtn_Click);
             // 
             // Form2
             // 
