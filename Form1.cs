@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -38,7 +38,7 @@ namespace OpenSaveTextBox
             this.FormBorderStyle = FormBorderStyle.Sizable;
             InitializeComponent();
             txtArea.Font = new Font("Courier new", 10);
-            myListBox.Visible = true;
+            myListBox.Visible = false;
             clipboardListBox.Visible = false;
             files = new Dictionary<string, TabPage>();
             undoRedo = new Dictionary<RichTextBox, UndoRedoStack>();
@@ -973,6 +973,12 @@ namespace OpenSaveTextBox
             {
                 clipboardListBox.Visible = false;
             }
+        }
+
+        private void CharacterPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var panel = tabControl.SelectedTab.Controls[0] as RichTextBox;
+            CharacterPanel ip = new CharacterPanel(tabControl, panel);
         }
     }
 }
