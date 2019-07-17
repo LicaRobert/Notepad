@@ -978,7 +978,7 @@ namespace OpenSaveTextBox
         private void CharacterPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var panel = tabControl.SelectedTab.Controls[0] as RichTextBox;
-            CharacterPanel ip = new CharacterPanel(tabControl, panel);
+            CharacterPanel character = new CharacterPanel(tabControl, panel);
         }
     }
 }
